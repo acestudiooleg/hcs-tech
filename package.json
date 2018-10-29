@@ -3,17 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm:dev-client\" \"npm:dev-server\"",
-    "dev-server": "nodemon --exec babel-node --presets babel-preset-env ./server/index.js",
+    "prestart": "npm run build",
+    "start": "babel-node --presets babel-preset-env ./server/index.js",
+    "dev": "concurrently \"npm:dev-client\" \"npm:dev-server\"",
+    "dev-server": "nodemon --inspect --exec babel-node --presets babel-preset-env ./server/index.js",
     "dev-client": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "bootstrap-vue": "^2.0.0-rc.11",
     "concurrently": "^4.0.1",
+    "cors": "^2.8.4",
     "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "express-session": "^1.15.6",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.3.7",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
@@ -43,7 +55,9 @@
       "plugin:vue/essential",
       "@vue/airbnb"
     ],
-    "rules": {},
+    "rules": {
+      "linebreak-style": 0
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
