@@ -12,3 +12,8 @@ export const cage = (handler = () => 1) => async (req, res, next) => {
     return null;
   }
 };
+
+export default {
+  removePassword,
+  cage,
+};

@@ -8,3 +8,10 @@ export const db = {
 export const useMocks = true;
 
 export const jwtsecret = '2a7bcb02df6944a9b2378da723990ca0';
+
+export default {
+  port,
+  db,
+  useMocks,
+  jwtsecret,
+};

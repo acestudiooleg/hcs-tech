@@ -64,3 +64,11 @@ export const all = cage(async ({ query }, res) => {
   const users = await q.lean().exec();
   res.send(users.map(removePassword));
 });
+
+export default {
+  create,
+  read,
+  update,
+  remove,
+  all,
+};

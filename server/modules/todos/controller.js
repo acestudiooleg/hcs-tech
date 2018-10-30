@@ -41,3 +41,12 @@ export const all = cage(async ({ query }, res) => {
 
 export const findAllByUser = cage(async ({ params }, res) =>
   res.send(await Todo.find({ userId: params.id })));
+
+export default {
+  create,
+  read,
+  update,
+  remove,
+  all,
+  findAllByUser,
+};

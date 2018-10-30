@@ -43,7 +43,7 @@ passport.use(new LocalStrategy(localOptions, localAuthorize));
 passport.use(new JwtStrategy(jwtOptions, getUserByToken));
 
 export const login = (req, res, next) =>
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', (err, user) => {
     if (err) {
       return next(err);
     }
@@ -68,3 +68,9 @@ const userByToken = isEndpoint => (req, res, next) =>
 
 export const protect = userByToken();
 export const me = userByToken(true);
+
+export default {
+  login,
+  protect,
+  me,
+};
