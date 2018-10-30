@@ -20,20 +20,6 @@ export const each = iterator => (obj = {}) => {
 };
 
 /**
- * Creates proxy for action and call mutations
- * @example
- * actionsToMutationsMap({logout: 'removeUser'});
- * // { logout: ({commit}, payload) => commit('removeUser', payload) }
- * @param {Object} actionsNamesObject - actions
- * @return {Object} actions with mutations proxy
- */
-export const actionsToMutationsMap = (actionsNamesObject = {}) => {
-  const actionToMutation = each(mutationName => ({ commit }, payload) =>
-    commit(mutationName, payload));
-  return actionToMutation(actionsNamesObject);
-};
-
-/**
  * Convert array of arrays to object bay pair
  * @example
  * fromArrayToObject([['hello', 'world'], ['name', 'peter']]);
@@ -169,7 +155,6 @@ export const pureMutation = each((moduleObject) => {
 
 export default {
   logger,
-  actionsToMutationsMap,
   pureMutation,
   each,
   fromArrayToObject,

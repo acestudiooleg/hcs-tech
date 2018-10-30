@@ -14,7 +14,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { AUTH_LOGOUT_ACTION } from '@/store/auth/types';
+import { AUTH_REMOVE_TOKEN_MUTATION } from '@/store/auth/types';
 
 export default {
   computed: {
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     logout(){
-      this.$store.dispatch(AUTH_LOGOUT_ACTION);
+      this.$store.commit(AUTH_REMOVE_TOKEN_MUTATION);
     }
   }
 }
