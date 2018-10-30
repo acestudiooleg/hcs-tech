@@ -45,6 +45,10 @@
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"
   },
+  "nodemonConfig": {
+    "watch": ["server/*"],
+    "delay": "2500"
+  },
   "eslintConfig": {
     "root": true,
     "env": {
