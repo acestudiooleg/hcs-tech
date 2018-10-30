@@ -1,5 +1,5 @@
 import User from './model';
-import { cage } from '../../utils';
+import { cage, removePassword } from '../../utils';
 import { useMocks } from '../../config';
 
 const createUser = cage(async (user) => {
@@ -18,7 +18,7 @@ const createMockUser = async () => {
     firstname: 'admin',
     lastname: 'adminson',
   };
-  const length = await User.count();
+  const length = await User.countDocuments();
   if (length === 0) {
     console.log('---------------CREATE USER -------------');
     await createUser(user);
@@ -30,9 +30,7 @@ if (useMocks) {
 }
 
 export const create = cage(async ({ body }, res) => {
-  const { user } = body;
-
-  if (!user.email) {
+  if (!body.email) {
     return res.status(422).json({
       errors: {
         email: 'is required',
@@ -40,7 +38,7 @@ export const create = cage(async ({ body }, res) => {
     });
   }
 
-  if (!user.password) {
+  if (!body.password) {
     return res.status(422).json({
       errors: {
         password: 'is required',
@@ -48,21 +46,21 @@ export const create = cage(async ({ body }, res) => {
     });
   }
 
-  const finalUser = await createUser(user);
-  return res.json({
-    user: finalUser,
-  });
+  const finalUser = await createUser(body);
+  return res.json(removePassword(finalUser));
 });
 
-export const read = cage(async ({ params }, res) => res.send(await User.findById(params.id)));
+export const read = cage(async ({ params }, res) =>
+  res.send(removePassword(await User.findById(params.id).lean())));
 
 export const update = cage(async ({ params, body }, res) =>
-  res.send(await User.findByIdAndUpdate(params.id, body)));
+  res.send(removePassword(await User.findByIdAndUpdate(params.id, body).lean())));
 
 export const remove = cage(async ({ params }, res) =>
   res.send(await User.findByIdAndRemove(params.id)));
 
 export const all = cage(async ({ query }, res) => {
   const q = Object.keys(query).length ? User.find(query) : User.find();
-  res.send(await q.exec());
+  const users = await q.lean().exec();
+  res.send(users.map(removePassword));
 });

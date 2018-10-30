@@ -1,9 +1,24 @@
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
+import passportJWT from 'passport-jwt';
 import User from '../users/model';
-import { removePassword, cage } from '../../utils';
+import { removePassword } from '../../utils';
+import { jwtsecret } from '../../config';
 
-const authorize = cage(async (email, password, done) => {
+const { Strategy: JwtStrategy, ExtractJwt } = passportJWT;
+
+const localOptions = {
+  usernameField: 'email',
+  passwordField: 'password',
+  session: false,
+};
+
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: jwtsecret,
+};
+
+const localAuthorize = async (email, password, done) => {
   try {
     const user = await User.findOne({ email });
     if (!user || !user.validatePassword(password)) {
@@ -13,53 +28,43 @@ const authorize = cage(async (email, password, done) => {
   } catch (error) {
     return done(error);
   }
-});
+};
 
-export const startegy = new LocalStrategy(
-  {
-    usernameField: 'user[email]',
-    passwordField: 'user[password]',
-  },
-  authorize,
-);
-
-export const login = cage((req, res, next) => {
-  const { email, password } = req.body;
-  if (!email) {
-    return res.status(422).json({
-      errors: {
-        email: 'is required',
-      },
-    });
+const getUserByToken = async ({ id }, done) => {
+  try {
+    const user = await User.findById(id);
+    return done(null, user || false);
+  } catch (error) {
+    return done(error);
   }
+};
 
-  if (!password) {
-    return res.status(422).json({
-      errors: {
-        password: 'is required',
-      },
-    });
-  }
-  return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+passport.use(new LocalStrategy(localOptions, localAuthorize));
+passport.use(new JwtStrategy(jwtOptions, getUserByToken));
+
+export const login = (req, res, next) =>
+  passport.authenticate('local', (err, user, info) => {
     if (err) {
       return next(err);
     }
 
-    if (passportUser) {
-      const user = passportUser;
-      user.token = passportUser.generateJWT();
-
+    if (user) {
       return res.json({ user: user.toAuthJSON() });
     }
 
-    return res.status(400).send(info);
+    return res.sendStatus(401);
   })(req, res, next);
-});
 
-export const me = cage(async ({ payload: { id } }, res) => {
-  const user = await User.findById(id);
-  if (!user) {
-    return res.sendStatus(400);
-  }
-  return res.json({ user: user.toAuthJSON() });
-});
+const userByToken = isEndpoint => (req, res, next) =>
+  passport.authenticate('jwt', (err, user) => {
+    if (err) {
+      return next(err);
+    }
+    if (user) {
+      return isEndpoint ? res.json(user) : next();
+    }
+    return res.sendStatus(401);
+  })(req, res, next);
+
+export const protect = userByToken();
+export const me = userByToken(true);

@@ -1,15 +1,14 @@
 import { omit } from 'lodash/fp';
 
-export const removePassword = omit(['password']);
+export const removePassword = omit(['hash', 'salt']);
 
-export const cage = handler => (req, res, next) => {
+export const cage = (handler = () => 1) => async (req, res, next) => {
   try {
-    handler(req, res, next);
+    return await handler(req, res, next);
   } catch (error) {
-    next(error);
-    console.error(error);
     if (next instanceof Function) {
-      next(error);
+      return next(error);
     }
+    return null;
   }
 };

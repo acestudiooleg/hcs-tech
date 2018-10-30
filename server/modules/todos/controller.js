@@ -13,7 +13,7 @@ const createMockTodos = async () => {
       isCompleted: false,
     },
   ];
-  const length = await Todo.count();
+  const length = await Todo.countDocuments();
   if (length === 0) {
     console.log('--------------- CREATE TODOS -------------');
     Todo.create(todos);
