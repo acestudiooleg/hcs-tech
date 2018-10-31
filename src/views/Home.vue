@@ -1,19 +1,21 @@
 <template>
   <v-layout>
-    <div class="container"></div>
+    <div class="container">
+      <todo-list/>
+    </div>
   </v-layout>
 </template>
 
 <script>
 // @ is an alias to /src
-import VLayout from "@/layouts/Default.vue";
-import HelloWorld from "@/components/HelloWorld.vue";
+import VLayout from '@/layouts/Default.vue';
+import TodoList from '@/components/TodoList.vue';
 
 export default {
-  name: "home",
+  name: 'home',
   components: {
     VLayout,
-    HelloWorld
-  }
+    TodoList,
+  },
 };
 </script>

@@ -28,7 +28,9 @@ export const userSchema = new mongoose.Schema({
  */
 userSchema.methods.setPassword = function setPassword(password) {
   this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+  this.hash = crypto
+    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
+    .toString('hex');
 };
 
 /**
@@ -37,7 +39,9 @@ userSchema.methods.setPassword = function setPassword(password) {
  * @memberof Users/Model
  */
 userSchema.methods.validatePassword = function validatePassword(password) {
-  const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+  const hash = crypto
+    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
+    .toString('hex');
   return this.hash === hash;
 };
 
@@ -67,6 +71,9 @@ userSchema.methods.toAuthJSON = function toAuthJSON() {
   return {
     _id: this._id,
     email: this.email,
+    firstname: this.firstname,
+    lastname: this.lastname,
+    age: this.age,
     token: this.generateJWT(),
   };
 };
