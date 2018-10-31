@@ -85,9 +85,9 @@ export const fromArrayToObject = (array = []) => {
  */
 export const createMethodChangeItemInList = (arrayName = 'list') => (
   iterator,
-  criteria = 'id',
+  criteria = '_id',
 ) => (state, payload) => {
-  const newState = { ...state };
+  const newState = state;
   newState[arrayName] = state[arrayName].map((el) => {
     const x = payload instanceof Object ? payload[criteria] : payload;
     if (el[criteria] === x) {
