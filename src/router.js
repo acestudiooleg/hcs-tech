@@ -5,17 +5,21 @@ import Login from './views/Login.vue';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: Home,
     },
     {
       component: Login,
-      path: '/login',
+      path: '/',
       name: 'login',
     },
   ],
 });
+
+export const transitionTo = (name, params) => router.push({ name, params });
+
+export default router;

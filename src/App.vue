@@ -3,6 +3,22 @@
     <router-view/>
   </div>
 </template>
+<script>
+import { AUTH_GET_USER_ACTION } from '@/store/auth/types';
+import { dispatch } from '@/store';
+import { transitionTo } from '@/router';
+import { setToken } from '@/utils';
+export default {
+  async mounted() {
+    setToken(null);
+    const user = await dispatch(AUTH_GET_USER_ACTION);
+    if (user && user.token) {
+      transitionTo('home');
+    }
+  }
+}
+</script>
+
 
 <style lang="scss">
 #app {

@@ -4,7 +4,6 @@ import mutations from './mutations';
 import state from './state';
 import { logger } from '@/utils';
 
-
 export default {
   ...logger(actions),
   getters,

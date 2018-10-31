@@ -13,6 +13,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "bootstrap-vue": "^2.0.0-rc.11",
     "cors": "^2.8.4",
@@ -40,26 +41,35 @@
     "babel-jest": "^23.0.1",
     "babel-preset-env": "^1.7.0",
     "concurrently": "^4.0.1",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "node-sass": "^4.9.0",
     "nodemon": "^1.18.5",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"
   },
   "nodemonConfig": {
-    "watch": ["server/*"],
+    "watch": [
+      "server/*"
+    ],
     "delay": "2500"
   },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "browser": true
     },
     "extends": [
       "plugin:vue/essential",
       "@vue/airbnb"
     ],
+    "plugins": [
+      "vue"
+    ],
     "rules": {
-      "linebreak-style": 0
+      "linebreak-style": 0,
+      "quotes": "single"
     },
     "parserOptions": {
       "parser": "babel-eslint"

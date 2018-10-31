@@ -4,7 +4,6 @@
       <h5 class="my-0 mr-md-auto font-weight-normal">HCS Tech</h5>
       <nav class="my-2 my-md-0 mr-md-3">
         <span class="p-2 text-dark">{{user.firstname}} {{user.lastname}}</span>
-        <img class="rounded" :src="user.avatar" alt="avatar">
       </nav>
       <button @click="logout" class="btn btn-outline-primary">Sign out</button>
     </div>
@@ -14,18 +13,19 @@
 
 <script>
 import { mapState } from 'vuex';
-import { AUTH_REMOVE_TOKEN_MUTATION } from '@/store/auth/types';
+import { dispatch } from '@/store';
+import { AUTH_LOGOUT_ACTION } from '@/store/auth/types';
 
 export default {
   computed: {
     ...mapState({
-      user: state => state.auth.user
-    })
+      user: (state) => state.auth.user,
+    }),
   },
   methods: {
-    logout(){
-      this.$store.commit(AUTH_REMOVE_TOKEN_MUTATION);
-    }
-  }
-}
+    logout() {
+      dispatch(AUTH_LOGOUT_ACTION);
+    },
+  },
+};
 </script>

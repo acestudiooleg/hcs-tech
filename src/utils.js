@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const logger = (acts) => {
   const actions = {};
   Object.keys(acts).forEach((act) => {
@@ -11,7 +13,18 @@ export const logger = (acts) => {
   return { actions };
 };
 
-export const each = iterator => (obj = {}) => {
+export const setToken = (token) => {
+  if (typeof token === 'string') {
+    axios.defaults.headers.common.Authorization = token
+      ? `Bearer ${token}`
+      : null;
+    return window.localStorage.setItem('hcs_token', token);
+  }
+  const storageToken = window.localStorage.getItem('hcs_token');
+  axios.defaults.headers.common.Authorization = `Bearer ${storageToken}`;
+};
+
+export const each = (iterator) => (obj = {}) => {
   const newObj = {};
   Object.keys(obj).forEach((key) => {
     newObj[key] = iterator(obj[key], key);
@@ -70,10 +83,10 @@ export const fromArrayToObject = (array = []) => {
  * @param {Function} iterator - update object (item, payload, state)
  * @param {String} criteria - [id]
  */
-export const createMethodChangeItemInList = (arrayName = 'list') => (iterator, criteria = 'id') => (
-  state,
-  payload,
-) => {
+export const createMethodChangeItemInList = (arrayName = 'list') => (
+  iterator,
+  criteria = 'id',
+) => (state, payload) => {
   const newState = { ...state };
   newState[arrayName] = state[arrayName].map((el) => {
     const x = payload instanceof Object ? payload[criteria] : payload;
@@ -106,8 +119,8 @@ export const createMethodChangeItemInList = (arrayName = 'list') => (iterator, c
 
  *
  */
-export const transformMutations = each(mutation => (state, payload) => {
-  const newState = { ...state };
+export const transformMutations = each((mutation) => (state, payload) => {
+  const newState = state;
   const result = mutation(state, payload);
   if (result) {
     if (state instanceof Array) {
@@ -149,7 +162,9 @@ export const transformMutations = each(mutation => (state, payload) => {
  */
 export const pureMutation = each((moduleObject) => {
   const newModule = { ...moduleObject };
-  newModule.mutations = transformMutations(fromArrayToObject(newModule.mutations));
+  newModule.mutations = transformMutations(
+    fromArrayToObject(newModule.mutations),
+  );
   return newModule;
 });
 
