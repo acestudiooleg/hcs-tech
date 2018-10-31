@@ -69,7 +69,7 @@
     ],
     "rules": {
       "linebreak-style": 0,
-      "quotes": "single"
+      "quotes": 0
     },
     "parserOptions": {
       "parser": "babel-eslint"
