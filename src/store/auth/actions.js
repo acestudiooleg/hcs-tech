@@ -28,6 +28,7 @@ export default {
   },
   [AUTH_LOGOUT_ACTION]({ commit }) {
     commit(AUTH_REMOVE_USER_MUTATION);
+    setToken('');
     transitionTo('login');
   },
   async [AUTH_GET_USER_ACTION]({ commit }) {
