@@ -1,31 +1,51 @@
 # hcs-tech
 
+### Technical task for HCS
+
+- Mongo database (users, auth, todos)
+- Express server CRUD (/me, /login, /api/users, /api/todos)
+- Vue/Vuex/Vie-Router Frontend stack
+- Authentication
+- TodoMVC
+
 ## Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compiles frontend and run server
+
 ```
-npm run serve
+npm start
 ```
 
-### Compiles and minifies for production
+### Run server in inspection mode
+
+```
+npm run dev-server
+```
+
+### Run frontend server
+
+```
+npm run dev-client
+```
+
+### Build frontend
+
 ```
 npm run build
 ```
 
-### Run your tests
+### Compiles and hot-reloads for development frontend and server
+
 ```
-npm run test
+npm run dev
 ```
 
 ### Lints and fixes files
+
 ```
 npm run lint
-```
-
-### Run your unit tests
-```
-npm run test:unit
 ```
